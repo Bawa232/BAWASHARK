@@ -1,0 +1,6 @@
+@BAWASHARK_HostAddress = http://localhost:5064
+
+GET {{BAWASHARK_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

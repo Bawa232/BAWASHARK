@@ -1,4 +1,5 @@
 ﻿using BAWASHARK.Data;
+using BAWASHARK.Data.DTOs;
 using BAWASHARK.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,6 +36,20 @@ namespace BAWASHARK.Controllers
             }
 
             return Ok(stock);
+        }
+        
+        [HttpPost]
+       
+        public IActionResult Create([FromBody] CreateStockRequestDto stockDto)
+        {
+            var stockModel = stockDto.ToStockFromCreatedDto();
+            _context.Stocks.Add(stockModel);
+            
+            _context.SaveChanges();
+            
+
+           return CreatedAtAction(nameof(GetById), new { id = stockModel.Id });
+
         }
 
     }

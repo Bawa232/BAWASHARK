@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BAWASHARK.Data.DTOs
+﻿namespace BAWASHARK.Data.DTOs
 {
-    public class StockDto
+    public class CreateStockRequestDto
     {
-        public int Id { get; set; }
         public string? Symbol { get; set; }
         public string? CompanyName { get; set; }
         public decimal Purchase { get; set; }

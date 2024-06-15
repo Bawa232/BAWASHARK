@@ -11,7 +11,7 @@ namespace BAWASHARK.Data
             
         }
 
-        public DbSet<Stock> Stock { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
         public DbSet<Comments> Comments { get; set; }
     }
 }

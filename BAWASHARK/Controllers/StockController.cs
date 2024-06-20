@@ -11,12 +11,10 @@ namespace BAWASHARK.Controllers
     [ApiController]
     public class StockController :  ControllerBase
     {
-        private readonly ApplicationDBContext _context;
         private readonly IStockRepository _stockRepo;
-        public StockController(ApplicationDBContext context, IStockRepository stockRepo)
+        public StockController(IStockRepository stockRepo)
         {
             _stockRepo = stockRepo;
-            _context = context;
         }
         
         [HttpGet]
@@ -33,12 +31,7 @@ namespace BAWASHARK.Controllers
         [HttpGet("id")]
         public async Task<IActionResult> GetById(int id)
         {
-            var stock = await _context.Stocks.FindAsync(id);
-
-            if (stock == null)
-            {
-                return NotFound();
-            }
+            var stock = await _stockRepo.GetByIdAsync(id);
 
             return Ok(stock.ToStockDto());
         }
@@ -47,33 +40,23 @@ namespace BAWASHARK.Controllers
 
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
-            var stockModel = stockDto.ToStockFromCreatedDto();
-            await _context.Stocks.AddAsync(stockModel);
+            var stock = stockDto.ToStockFromCreatedDto();
 
-            await _context.SaveChangesAsync();
+            await _stockRepo.CreateAsync(stock);
 
-
-            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id });
+            return CreatedAtAction(nameof(GetById), new { id = stock.Id }, stock.ToStockDto());
 
         }
         [HttpPut("id")]
 
         public async Task<IActionResult> Update(int id, UpdateStockDto updateDto)
         {
-            var stock = await _context.Stocks.FindAsync(id);
+            var stock = await _stockRepo.UpdateAsync(id, updateDto);
 
             if (stock == null)
             {
                 return NotFound();
             }
-            stock.Symbol = updateDto.Symbol;
-            stock.CompanyName = updateDto.CompanyName;
-            stock.Purchase = updateDto.Purchase;
-            stock.LastDiv = updateDto.LastDiv;
-            stock.Industry = updateDto.Industry;
-            stock.MarketCap = updateDto.MarketCap;
-
-            await _context.SaveChangesAsync();
 
             return Ok(stock.ToStockDto());
         }
@@ -81,14 +64,12 @@ namespace BAWASHARK.Controllers
         [HttpDelete("id")]
         public async Task<IActionResult> Delete(int id)
         {
-            var stock = await _context.Stocks.FindAsync(id);
+            var stock = await _stockRepo.DeleteAsync(id);
+
             if (stock == null)
             {
                 return BadRequest();
             }
-
-            _context.Stocks.Remove(stock);
-            await _context.SaveChangesAsync();
 
             return Ok();
             

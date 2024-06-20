@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using BAWASHARK.Data;
+using BAWASHARK.Interfaces;
+using BAWASHARK.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
 });
 
 builder.Services.AddControllers();
-
+builder.Services.AddScoped<IStockRepository, StockRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

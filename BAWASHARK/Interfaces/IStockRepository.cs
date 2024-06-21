@@ -1,5 +1,5 @@
-﻿using BAWASHARK.Data.DTOs;
-using BAWASHARK.Models;
+﻿using BAWASHARK.Models;
+using BAWASHARK.Models.DTOs;
 
 namespace BAWASHARK.Interfaces
 {

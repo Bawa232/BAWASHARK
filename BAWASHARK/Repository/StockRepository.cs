@@ -2,8 +2,8 @@
 using BAWASHARK.Interfaces;
 using BAWASHARK.Data;
 using Microsoft.EntityFrameworkCore;
-using BAWASHARK.Data.DTOs;
 using BAWASHARK.Mappers;
+using BAWASHARK.Models.DTOs;
 
 namespace BAWASHARK.Repository
 {

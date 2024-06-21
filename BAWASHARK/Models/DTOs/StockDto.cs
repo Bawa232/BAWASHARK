@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BAWASHARK.Data.DTOs
+namespace BAWASHARK.Models.DTOs
 {
     public class StockDto
     {

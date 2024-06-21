@@ -1,4 +1,4 @@
-﻿namespace BAWASHARK.Data.DTOs
+﻿namespace BAWASHARK.Models.DTOs
 {
     public class CreateStockRequestDto
     {

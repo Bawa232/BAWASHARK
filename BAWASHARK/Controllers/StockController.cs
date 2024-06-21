@@ -1,7 +1,6 @@
-﻿using BAWASHARK.Data;
-using BAWASHARK.Data.DTOs;
-using BAWASHARK.Interfaces;
+﻿using BAWASHARK.Interfaces;
 using BAWASHARK.Mappers;
+using BAWASHARK.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

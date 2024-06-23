@@ -20,6 +20,7 @@ namespace BAWASHARK.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
+            
             var comments = await _commentRepo.GetAllAsync();
             
             var commentDto = comments.Select(s => s.ToCommentDto());
@@ -27,10 +28,11 @@ namespace BAWASHARK.Controllers
             return Ok(commentDto);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id:int}")]
 
         public async Task<IActionResult> GetById(int id)
         {
+           
             var comment = await _commentRepo.GetByIdAsync(id);
 
             if (comment == null)
@@ -41,10 +43,18 @@ namespace BAWASHARK.Controllers
             return Ok(comment.ToCommentDto());
         }
 
-        [HttpPost("stockId")]
+        [HttpPost("{stockId:int}")]
 
         public async Task<IActionResult> Create(int stockId, [FromBody] CreateCommentDto commentDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (!await _stockRepo.StockExistsAsync(stockId))
             {
                 return BadRequest("stock does not exist");
@@ -62,9 +72,13 @@ namespace BAWASHARK.Controllers
             return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto);    
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCommentRequestDto commentDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var commentModel = commentDto.ToCommentFromUpdate();
             var existsComment = await _commentRepo.UpdateAsync(id, commentModel);
 
@@ -76,7 +90,7 @@ namespace BAWASHARK.Controllers
             return Ok(existsComment);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var deleteComment = await _commentRepo.DeleteAsync(id);

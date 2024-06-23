@@ -27,7 +27,7 @@ namespace BAWASHARK.Controllers
             return Ok(stocks);
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var stock = await _stockRepo.GetByIdAsync(id);
@@ -39,6 +39,10 @@ namespace BAWASHARK.Controllers
 
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var stock = stockDto.ToStockFromCreatedDto();
 
             await _stockRepo.CreateAsync(stock);
@@ -46,10 +50,14 @@ namespace BAWASHARK.Controllers
             return CreatedAtAction(nameof(GetById), new { id = stock.Id }, stock.ToStockDto());
 
         }
-        [HttpPut("id")]
+        [HttpPut("{id:int}")]
 
         public async Task<IActionResult> Update(int id, UpdateStockDto updateDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var stock = await _stockRepo.UpdateAsync(id, updateDto);
 
             if (stock == null)
@@ -60,7 +68,7 @@ namespace BAWASHARK.Controllers
             return Ok(stock.ToStockDto());
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var stock = await _stockRepo.DeleteAsync(id);

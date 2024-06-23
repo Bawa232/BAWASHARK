@@ -79,7 +79,7 @@ namespace BAWASHARK.Controllers
         [HttpDelete("id")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleteComment = _commentRepo.DeleteAsync(id);
+            var deleteComment = await _commentRepo.DeleteAsync(id);
            
             if (deleteComment == null)
             {

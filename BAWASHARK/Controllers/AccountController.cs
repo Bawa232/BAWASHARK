@@ -1,4 +1,5 @@
-﻿using BAWASHARK.Models;
+﻿using BAWASHARK.Interfaces;
+using BAWASHARK.Models;
 using BAWASHARK.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,11 @@ namespace BAWASHARK.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        public AccountController(UserManager<AppUser> userManager)
+        private readonly ITokenService _tokenService;
+        public AccountController(UserManager<AppUser> userManager,  ITokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -38,7 +41,14 @@ namespace BAWASHARK.Controllers
                     var userRole = await _userManager.AddToRoleAsync(appUser, "User");
                     if (userRole.Succeeded)
                     {
-                        return Ok("user created");
+                        return Ok(
+                            new NewUserDto
+                            {
+                                UserName = appUser.UserName,
+                                Email = appUser.Email,
+                                Token = _tokenService.CreateToken(appUser)
+                            }
+                            );
                     }
                     else
                     {
